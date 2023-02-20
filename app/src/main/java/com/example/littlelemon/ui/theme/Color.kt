@@ -2,7 +2,9 @@ package com.example.littlelemon.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val primaryColor1 = Color(73,94,87)
+val primaryColor2 = Color(244, 206, 20)
+val secondaryColor1 = Color(238,153,114)
+val secondaryColor2 = Color(251, 218, 187)
+val highlightColor1 = Color(237, 239, 238)
+val highlightColor2 = Color(51,51,51)
