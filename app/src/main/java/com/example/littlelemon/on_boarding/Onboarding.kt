@@ -3,24 +3,29 @@ package com.example.littlelemon.on_boarding
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.littlelemon.R
+import com.example.littlelemon.ui.theme.highlightColor1
 import com.example.littlelemon.ui.theme.primaryColor2
+import com.example.littlelemon.ui.theme.secondaryColor1
 import com.example.littlelemon.ui.theme.secondaryColor2
 
 
 @Composable
-fun OnboardingHeader(){
+fun OnboardingHeader() {
     val imageModifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 20.dp)
@@ -34,7 +39,7 @@ fun OnboardingHeader(){
 }
 
 @Composable
-fun OnboardingTitle(){
+fun OnboardingTitle() {
     val labelModifier = Modifier
         .fillMaxWidth()
         .background(Color(73, 94, 87))
@@ -53,7 +58,7 @@ fun OnboardingTitle(){
  * Modifier is optional param
  */
 @Composable
-fun OnboardingLabel(value: String, modifier : Modifier = Modifier){
+fun OnboardingLabel(value: String, modifier: Modifier = Modifier) {
 
     Text(
         modifier = modifier,
@@ -63,17 +68,47 @@ fun OnboardingLabel(value: String, modifier : Modifier = Modifier){
 }
 
 
-
 @Composable
-fun OnboardingTextField(value : String){
-    var text by remember {mutableStateOf("")}
-    OutlinedTextField(
-        label = {Text(value)},
-        maxLines = 2,
-        textStyle = MaterialTheme.typography.body1,
-        value = text, onValueChange =  {
-        text = it
-    } )
+fun OnboardingTextField(value: String) {
+    var txt by remember { mutableStateOf("") }
+
+    Column(
+    ) {
+        Text(value)
+        BasicTextField(
+            maxLines = 2,
+            textStyle = MaterialTheme.typography.body1,
+            value = txt, onValueChange = { newText ->
+                txt = newText
+            },
+            decorationBox = { innerTextField ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp) // Margin
+                        .border(
+                            width = 2.dp,
+                            color = highlightColor1,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .padding(all = 16.dp) // Content padding
+                ) {
+                    // Place holder
+                    if (txt.isEmpty()) {
+                        Text(
+                            text = value,
+                            color = highlightColor1
+                        )
+                    }
+                    innerTextField()
+                }
+
+            }
+
+
+        )
+    }
+
 }
 
 @Composable
@@ -81,27 +116,28 @@ fun OnboardingResgierButton() {
     Button(
         modifier = Modifier
             .fillMaxWidth(),
-        border= BorderStroke(2.dp, secondaryColor2),
+        border = BorderStroke(2.dp, secondaryColor1),
         shape = RoundedCornerShape(8.dp),
         elevation = ButtonDefaults.elevation(0.dp),
         onClick = {
             print("Hello There")
         },
         colors = ButtonDefaults.buttonColors(backgroundColor = primaryColor2)
-    ){
+    ) {
         Text(text = "Register", style = MaterialTheme.typography.body1)
     }
 }
 
 @Composable
-fun OnboardingContent(){
+fun OnboardingContent() {
     val colModifier = Modifier
         .padding(horizontal = 15.dp)
 
     Column(
         modifier = colModifier
-    ){
-        OnboardingLabel("Personal information",
+    ) {
+        OnboardingLabel(
+            "Personal information",
             modifier = Modifier
                 .padding(vertical = 30.dp)
         )
@@ -116,7 +152,6 @@ fun OnboardingContent(){
 }
 
 
-
 @Composable
 @Preview(showBackground = true)
 fun OnboardingView() {
@@ -125,14 +160,11 @@ fun OnboardingView() {
         .padding(bottom = 15.dp)
     Column(
         modifier = colModifier
-    ){
+    ) {
 
         OnboardingHeader()
         OnboardingTitle()
         OnboardingContent()
-
-
-
 
 
     }
