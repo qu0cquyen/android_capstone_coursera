@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.on_boarding.OnboardingHeader
 import com.example.littlelemon.on_boarding.OnboardingView
 import com.example.littlelemon.ui.theme.LittleLemonTheme
@@ -20,10 +21,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             LittleLemonTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-//                    Greeting("Android")
-                    OnboardingView()
-                }
+//                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
+////                    Greeting("Android")
+//                    OnboardingView()
+//                }
+                val navController = rememberNavController()
+                AppNavigation(navController = navController, context = applicationContext)
             }
         }
     }
