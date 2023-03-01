@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.littlelemon.home.HomeView
@@ -21,22 +22,24 @@ fun AppNavigation(
     val isFirstTime = sharedPreference.getBoolean("on-board", true)
     println(isFirstTime)
     var startDestination : String = if(isFirstTime){
-        "Onboarding"
+        NavigationDirections.OnBoarding.destination
     } else {
-        "Home"
+        NavigationDirections.Home.destination
     }
 
+//    val startDestination : String = NavigationDirections.OnBoarding.destination
+
     NavHost(modifier = modifier, navController = navController, startDestination = startDestination) {
-        composable("Onboarding") {
+        composable(NavigationDirections.OnBoarding.destination) {
             OnboardingView(navController)
         }
 
-        composable("Home") {
-            HomeView()
+        composable(NavigationDirections.Home.destination) {
+            HomeView(navController)
         }
 
-        composable("Profile") {
-            ProfileView()
+        composable(NavigationDirections.Profile.destination) {
+            ProfileView(navController)
         }
     }
 }

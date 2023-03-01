@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">LittleLemon</string>
     <string name="app_logo">LittleLemonLogo</string>
+    <string name="app_profile">Profile</string>
 </resources>

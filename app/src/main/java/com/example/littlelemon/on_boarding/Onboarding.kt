@@ -253,6 +253,8 @@ fun OnboardingContent(navController: NavHostController) {
 
 @Composable
 fun OnboardingView(navController: NavHostController) {
+
+
     val colModifier = Modifier
         .fillMaxSize()
         .padding(bottom = 15.dp)
