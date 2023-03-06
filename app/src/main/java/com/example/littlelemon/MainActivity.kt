@@ -1,19 +1,27 @@
 package com.example.littlelemon
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.example.littlelemon.on_boarding.OnboardingHeader
-import com.example.littlelemon.on_boarding.OnboardingView
+
 import com.example.littlelemon.ui.theme.LittleLemonTheme
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +35,55 @@ class MainActivity : ComponentActivity() {
 //                }
                 val navController = rememberNavController()
                 AppNavigation(navController = navController, context = applicationContext)
+
+                val db = MenuDatabase.getInstance(applicationContext)
+                val menuDao = db.menuDao()
+
+
+
+                runBlocking {
+
+                    val httpClient = HttpClient() {
+                        install(ContentNegotiation)
+                    }
+
+                    val response: HttpResponse =
+                        httpClient.get("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")
+
+                    val stringBody: String = response.body()
+
+                    println(stringBody)
+
+
+                    val menuObj: MenuNetworkdata =
+                        Json.decodeFromString(MenuNetworkdata.serializer(), stringBody)
+
+
+                    // Save to Database
+                    lifecycleScope.launch {
+                        // Calling db
+
+                        if(menuDao.getAllMenu().value?.isEmpty() == true){
+                            for (menuItem: MenuItemNetwork in menuObj.itemNetwork) {
+                                menuDao.insert(
+                                    Menu(
+                                        menuItem.id,
+                                        menuItem.title,
+                                        menuItem.description,
+                                        menuItem.price,
+                                        menuItem.image,
+                                        menuItem.category,
+                                    )
+                                )
+                            }
+                        }
+
+
+                    }
+
+                }
+
+
             }
         }
     }
